@@ -4,7 +4,12 @@ from reponse import Reponse
 
 class Quizz:
     def __init__(self, liste_questions: list):
-        self.questions = liste_questions if isinstance(liste_questions, Question) else None
+        if isinstance(liste_questions, list):
+            for elem in liste_questions:
+                if isinstance(elem, Question):
+                    self.questions = liste_questions
+        else:
+            self.questions = None
         self.score = 0
 
     def __check_response(self, reponse: Reponse, question: Question):
@@ -17,13 +22,14 @@ class Quizz:
 
     def deroulee_quizz(self):
         for question in self.questions:
-            print(f'Question n° {list.index(question)} sur {len(self.questions)} :')
+            print(f'Question n° {self.questions.index(question)+1} sur {len(self.questions)} :')
             print(f'{question.question}')
             print("Voici les propositions : ")
-            print(f'{reponse} \n' for reponse in question.answers)
+            for reponse in question.answers.values():
+                print(reponse if reponse is not None else "")
             print("Il y a plusieurs bonnes réponses" if question.multiple_answers else "Il n'y a qu'une bonne réponse")
 
-            reponse_utilisateur = input("Entrez vos réponses, séparer par des virgules")
+            reponse_utilisateur = input("Entrez vos réponses, séparer par des virgules : ")
 
             Quizz.__check_response(reponse=reponse_utilisateur, question=question)
 
