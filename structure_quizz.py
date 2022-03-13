@@ -15,11 +15,11 @@ class API_Call_to_send:
 
     def get_quizz(self):
         query = {
-            
             "limit": self.limit,
             "category": self.category,
             "difficulty": self.difficulty,
             "tags": self.tags
         }
-        response = requests.post(API_Call_to_send.url_api, params=query, headers={'X-Api-Key':API_Call_to_send.api_key})
+        headers = {'x-api-key': API_Call_to_send.api_key, 'user-agent': 'batman'}
+        response = requests.get(url=API_Call_to_send.url_api, params=query, headers=headers)
         return response

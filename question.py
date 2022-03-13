@@ -12,3 +12,13 @@ class Question:
         self.difficulty = difficulty
         self.answers = answers
         self.correct_answers = correct_answers
+        self.structure_reponse = "answer_{val}_correct"
+        self.valide_format_reponse = False
+
+    def format_answers_for_display(self):
+        answer_to_return = []
+        for key, value in self.correct_answers.items():
+            if value == "true":
+                answer_to_return.append(self.answers[key.replace("_correct", "")])
+        return answer_to_return
+
