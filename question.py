@@ -1,5 +1,6 @@
 class Question:
-    def __init__(self, id_question: int, question: str, description: str, multiple_answers: bool, explanation: str, tip: str, tags: list,
+    def __init__(self, id_question: int, question: str, description: str, multiple_answers: bool, explanation: str,
+                 tip: str, tags: list,
                  category: str, difficulty: str, answers: dict, correct_answers: dict):
         self.id = id_question
         self.question = question
@@ -21,4 +22,3 @@ class Question:
             if value == "true":
                 answer_to_return.append(self.answers[key.replace("_correct", "")])
         return answer_to_return
-

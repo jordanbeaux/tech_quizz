@@ -1,13 +1,13 @@
-from distutils.command.config import config
 import requests
 import Utilitaires
+
 
 class API_Call_to_send:
     config_file = Utilitaires.lecture_config("./config.json")
     api_key = config_file['api_key']
     url_api = "https://quizapi.io/api/v1/questions"
 
-    def __init__(self, difficulty: str, category: str = None, limit: int = 10, tags: list =None):
+    def __init__(self, difficulty: str, category: str = None, limit: int = 10, tags: list = None):
         self.tags = tags
         self.difficulty = difficulty
         self.category = category

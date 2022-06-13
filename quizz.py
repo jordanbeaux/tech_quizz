@@ -2,6 +2,7 @@ from question import Question
 from reponse import Reponse
 import Utilitaires
 
+
 class Quizz:
     def __init__(self, liste_questions: list):
         if isinstance(liste_questions, list):
@@ -21,12 +22,12 @@ class Quizz:
                 point_accorde.append(False)
 
         if False not in point_accorde:
-            print("Bravo c'est la bonne réponse !")
+            print("Well done, it's correct !")
             self.score += 1
-            print(f'Votre score est désormais de : {self.score} points.')
+            print(f'Your score is now : {self.score} points.')
         else:
             good_answer_to_display = question.format_answers_for_display()
-            print("Ce n'est pas la bonne réponse. La bonne réponse était :")
+            print("Incorrect. The right answer was :")
             for elem in good_answer_to_display:
                 print(elem)
 
@@ -38,32 +39,31 @@ class Quizz:
                 correct_answer_to_compare.append(answer)
         return correct_answer_to_compare
 
-
     def deroulee_quizz(self):
         for question in self.questions:
             print(f'Question n° {self.questions.index(question) + 1} sur {len(self.questions)} :')
             print(f'{question.question}')
-            print("Voici les propositions : ")
+            print("Here are the options : ")
             compteur = 1
             for reponse in question.answers.values():
                 if reponse is not None:
                     reponse_formatted = reponse
                     print("{compteur}) {reponse}".format(compteur=compteur, reponse=reponse_formatted))
                     if reponse is not None: compteur += 1
-            print("Il y a plusieurs bonnes réponses" if question.multiple_answers == "true" else "Il n'y a qu'une bonne réponse")
+            print("There are several correct answers, pick them all" if question.multiple_answers == "true" else
+                  "There is only one correct answer")
 
             reponse_to_compare = Quizz.__format_good_answers(question)
             while not question.valide_format_reponse:
-                reponse_utilisateur_input = input("Entrez vos réponses, séparer par des virgules : ")
+                reponse_utilisateur_input = input("Type your  answers and sort them with comas : ")
                 question.valide_format_reponse = Utilitaires.verif_reponse_format(reponse_utilisateur_input)
 
             reponse_utilisateur_list = reponse_utilisateur_input.split(",")
 
-
-
             reponse_utilisateur = Reponse(reponse_utilisateur_list)
             reponse_utilisateur.format_reponse(question.structure_reponse)
 
-            self.__check_response(reponse_utilisateur=reponse_utilisateur, question=question, reponse_quizz= reponse_to_compare)
+            self.__check_response(reponse_utilisateur=reponse_utilisateur, question=question,
+                                  reponse_quizz=reponse_to_compare)
 
-        print(f'Le quizz est terminée. Votre score final est de {self.score}')
+        print(f'The quizz is done. Your final score is {self.score} points.')
