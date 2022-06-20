@@ -1,4 +1,7 @@
 class Question:
+    """
+    Question get from the API.
+    """
     def __init__(self, id_question: int, question: str, description: str, multiple_answers: bool, explanation: str,
                  tip: str, tags: list,
                  category: str, difficulty: str, answers: dict, correct_answers: dict):

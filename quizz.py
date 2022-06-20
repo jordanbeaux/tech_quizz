@@ -1,27 +1,37 @@
 from question import Question
-from reponse import Reponse
+from reponse import Answer
 import Utilitaires
 
 
 class Quizz:
-    def __init__(self, liste_questions: list):
-        if isinstance(liste_questions, list):
-            for elem in liste_questions:
+    """
+    Structured quizz in the app. Get from the API and rebuild it from it. It's composed with the object Question.
+    """
+    def __init__(self, questions_list: list):
+        if isinstance(questions_list, list):
+            for elem in questions_list:
                 if isinstance(elem, Question):
-                    self.questions = liste_questions
+                    self.questions = questions_list
         else:
             self.questions = None
         self.score = 0
 
-    def __check_response(self, reponse_utilisateur: Reponse, reponse_quizz: list, question: Question):
-        point_accorde = []
-        for reponse in reponse_quizz:
-            if reponse in reponse_utilisateur.reponse_formatte:
-                point_accorde.append(True)
-            else:
-                point_accorde.append(False)
+    def __check_response(self, user_response: Answer, quizz_response: list, question: Question):
+        """
+        Check if the player's answer is correct or not.
 
-        if False not in point_accorde:
+        :param user_response: Answer sent by the player
+        :param quizz_response: Correct answer of the question
+        :param question: The current question
+        """
+        point = []
+        for reponse in quizz_response:
+            if reponse in user_response.reponse_formatte:
+                point.append(True)
+            else:
+                point.append(False)
+
+        if False not in point:
             print("Well done, it's correct !")
             self.score += 1
             print(f'Your score is now : {self.score} points.')
@@ -33,6 +43,10 @@ class Quizz:
 
     @staticmethod
     def __format_good_answers(question: Question):
+        """
+        :param question: question to format.
+        :return:
+        """
         correct_answer_to_compare = []
         for answer, value in question.correct_answers.items():
             if value == 'true':
@@ -40,6 +54,9 @@ class Quizz:
         return correct_answer_to_compare
 
     def deroulee_quizz(self):
+        """
+        Display the quizz and check the player's answers.
+        """
         for question in self.questions:
             print(f'Question n° {self.questions.index(question) + 1} sur {len(self.questions)} :')
             print(f'{question.question}')
@@ -56,14 +73,14 @@ class Quizz:
             reponse_to_compare = Quizz.__format_good_answers(question)
             while not question.valide_format_reponse:
                 reponse_utilisateur_input = input("Type your  answers and sort them with comas : ")
-                question.valide_format_reponse = Utilitaires.verif_reponse_format(reponse_utilisateur_input)
+                question.valide_format_reponse = Utilitaires.check_response_format(reponse_utilisateur_input)
 
             reponse_utilisateur_list = reponse_utilisateur_input.split(",")
 
-            reponse_utilisateur = Reponse(reponse_utilisateur_list)
-            reponse_utilisateur.format_reponse(question.structure_reponse)
+            reponse_utilisateur = Answer(reponse_utilisateur_list)
+            reponse_utilisateur.format_response(question.structure_reponse)
 
-            self.__check_response(reponse_utilisateur=reponse_utilisateur, question=question,
-                                  reponse_quizz=reponse_to_compare)
+            self.__check_response(user_response=reponse_utilisateur, question=question,
+                                  quizz_response=reponse_to_compare)
 
         print(f'The quizz is done. Your final score is {self.score} points.')
