@@ -10,11 +10,11 @@ class API_Call_to_send:
     api_key = config_file['api_key']
     url_api = "https://quizapi.io/api/v1/questions"
 
-    def __init__(self, difficulty: str, category: str = None, limit: int = 10, tags: list = None):
+    def __init__(self, difficulty: str, category: str = None, number_of_question: int = 10, tags: list = None):
         self.tags = tags
         self.difficulty = difficulty
         self.category = category
-        self.limit = limit
+        self.limit = number_of_question
 
     def get_quizz(self):
         """
